@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>{Title}</title>
+    <meta charset="utf-8">
+    {block:Description}<meta name="description" content="{MetaDescription}">{/block:Description}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/nachuraru/zorua/zorua.min.css">
+    <link rel="icon" href="{Favicon}">
+    <link rel="alternate" type="application/rss+xml" href="{RSS}">
+    <meta name="image:sb">
+    <meta name="font:body" content="">
+    <meta name="font:title" content="">
+    <meta name="color:bg" content="#ccc">
+    <meta name="color:text" content="#111">
+    <meta name="color:accent" content="teal">
+    <meta name="if:title">
+    <meta name="if:tags">
+    <meta name="if:filed">
+    <meta name="text:font override" content="">
+  <style>
+    body { font-family:{font:body}; font-family:{text:font override}; color:{color:text}; background:{color:bg}; }
+    a { text-decoration:none; }
+    #desc a, .body a { text-decoration:underline; }
+    a:hover { color:{color:accent}; }
+    h1, h2, h3 { font-family:{font:title}; font-family:{text:font override}; }
+    aside#sidebar { display:flex; flex-flow:column wrap; justify-content:center; position:fixed; width:250px; height:100vh; padding:1rem; overflow:hidden; } 
+      #sidebar h1 { margin:0; font-size:1.5rem; }
+      #sidebar img { margin:1rem 0 0; } 
+      #desc { margin:1rem 0 0; }
+      #pagination { display:flex; margin:1rem 0 0; padding:0; font-weight:bold; list-style-type:none; }
+    section#posts { margin:auto; padding-top:50px; width:500px; }
+      footer { margin:1rem 0 50px; font-size:0.9rem; }
+        .permalink { font-family:{font:title}; font-family:{text:font override}; font-weight:bold; }
+        .tags { margin:0.25rem 0 0; }
+        ul.tags { display:inline-block; margin:0; padding:0; list-style-type:none; }
+        ul.tags li { display:inline-block; margin:0 10px 0 0; padding:0; }
+        ul.tags a:before { content:'#'; opacity:50%; }
+    article.post { margin:0 auto; width:100%; }
+      .body { margin:0.5rem 0 1rem; }
+    .reblog-header { margin:1rem 0 0.5rem; font-weight:bold; }
+  </style></head><body>
+    <main>
+      <aside id="sidebar">
+        {block:ifTitle}<h1><a href="/">{Title}</a></h1>{/block:ifTitle}
+        <a href=""><img src="{image:sb}"></a>
+        {block:Description}<div id="desc">{Description}</div>{/block:Description}
+        {block:Pagination}
+        <ul id="pagination">
+          {block:PreviousPage}<li><a href="{PreviousPage}">prev</a></li>{/block:PreviousPage}
+          {block:NextPage}<li><a href="{NextPage}">next</a></li>{/block:NextPage}
+        </ul>
+        {/block:Pagination}
+      </aside>
+      <section id="posts">{block:Posts}
+         <!-- NPF & legacy text -->
+        {block:Text}
+          <article class="post text">
+            {block:Title}<h2><a href="{Permalink}">{Title}</a></h2>{/block:Title}
+            {block:NotReblog}<div class="body">{Body}</div>{/block:NotReblog}
+            {block:RebloggedFrom}
+              <div class="reblogs">{block:Reblogs}
+                <div class="reblog-header">
+                  {block:IsActive}<a href="{Permalink}">{Username}</a>{/block:IsActive}
+                  {block:IsDeactivated}<span class="dead">{Username}</span>{/block:IsDeactivated}
+                </div>
+                <div class="body">{Body}</div>
+              {/block:Reblogs}</div>
+            {/block:RebloggedFrom}
+          </article>
+        {/block:Text}
+        <!-- asks -->
+        {block:Answer}<article class="post ask">
+          <div class="question"><p><b>{Asker}</b>: {Question}</p></div>
+            {block:Answerer}<div class="answer">
+              {block:NotReblog}{Replies}{/block:NotReblog}
+              {block:RebloggedFrom}
+              <div class="reblogs">{block:Reblogs}
+                <div class="reblog-header">
+                  {block:IsActive}<a href="{Permalink}">{Username}</a>{/block:IsActive}
+                  {block:IsDeactivated}<span class="dead">{Username}</span>{/block:IsDeactivated}
+                </div>
+                <div class="body">{Body}</div>
+              {/block:Reblogs}</div>
+              {/block:RebloggedFrom}
+            </div>{/block:Answerer}
+        </article>{/block:Answer}
+        <!-- legacy photo -->
+        {block:Photo}<article class="post photo">
+          <img src="{PhotoURL-500}" alt="{PhotoAlt}"/>
+          {block:NotReblog}{Caption}{/block:NotReblog}
+          {block:RebloggedFrom}
+            <div class="reblogs">{block:Reblogs}
+              <div class="reblog-header">
+                {block:IsActive}<a href="{Permalink}">{Username}</a>{/block:IsActive}
+                {block:IsDeactivated}<span class="dead">{Username}</span>{/block:IsDeactivated}
+              </div>
+              <div class="body">{Body}</div>
+            {/block:Reblogs}</div>
+          {/block:RebloggedFrom}
+        </article>{/block:Photo}
+        <!-- legacy photoset -->
+        {block:Photoset}<article class="post photoset">
+          {Photoset}
+          {block:NotReblog}{Caption}{/block:NotReblog}
+          {block:RebloggedFrom}
+            <div class="reblogs">{block:Reblogs}
+              <div class="reblog-header">
+                {block:IsActive}<a href="{Permalink}">{Username}</a>{/block:IsActive}
+                {block:IsDeactivated}<span class="dead">{Username}</span>{/block:IsDeactivated}
+              </div>
+              <div class="body">{Body}</div>
+            {/block:Reblogs}</div>
+          {/block:RebloggedFrom}
+        </article>{/block:Photoset}
+        <!-- legacy quote -->
+        {block:Quote}<article class="post quote">
+          <h2>"{Quote}"</h2>
+          {block:Source}<div class="source">{Source}</div>{/block:Source}
+        </article>{/block:Quote}
+        <!-- legacy link -->
+        {block:Link}<article class="post link">
+          <h2><a href="{URL}" {Target}>{Name}</a></h2>
+          {block:NotReblog}{Description}{/block:NotReblog}
+          {block:RebloggedFrom}
+            <div class="reblogs">{block:Reblogs}
+              <div class="reblog-header">
+                {block:IsActive}<a href="{Permalink}">{Username}</a>{/block:IsActive}
+                {block:IsDeactivated}<span class="dead">{Username}</span>{/block:IsDeactivated}
+              </div>
+              <div class="body">{Body}</div>
+            {/block:Reblogs}</div>
+          {/block:RebloggedFrom}
+        </article>{/block:Link}
+        <!-- legacy chat -->
+        {block:Chat}<article class="post chat">
+          {block:Title}<h2><a href="{Permalink}">{Title}</a></h2>{/block:Title}
+          <ul>{block:Lines}
+            <li class="{Alt} user_{UserNumber}">{block:Label}<span class="label">{Label}</span>{/block:Label}{Line}</li>
+          {/block:Lines}</ul>
+        </article>{/block:Chat}
+        <!-- legacy video -->
+        {block:Video}<article class="post video">
+          {Video-700}
+          {block:NotReblog}{Description}{/block:NotReblog}
+          {block:RebloggedFrom}
+            <div class="reblogs">{block:Reblogs}
+              <div class="reblog-header">
+                {block:IsActive}<a href="{Permalink}">{Username}</a>{/block:IsActive}
+                {block:IsDeactivated}<span class="dead">{Username}</span>{/block:IsDeactivated}
+              </div>
+              <div class="body">{Body}</div>
+            {/block:Reblogs}</div>
+          {/block:RebloggedFrom}
+        </article>{/block:Video}
+        <!-- legacy audio -->
+        {block:Audio}<article class="post audio">
+          {AudioEmbed}
+          {block:NotReblog}{Description}{/block:NotReblog}
+          {block:RebloggedFrom}
+            <div class="reblogs">{block:Reblogs}
+              <div class="reblog-header">
+                {block:IsActive}<a href="{Permalink}">{Username}</a>{/block:IsActive}
+                {block:IsDeactivated}<span class="dead">{Username}</span>{/block:IsDeactivated}
+              </div>
+              <div class="body">{Body}</div>
+            {/block:Reblogs}</div>
+          {/block:RebloggedFrom}
+        </article>{/block:Audio}
+        <footer>
+          <span class="permalink"><a href="{Permalink}">{TimeAgo}</a></span>
+          {block:ifTags}{block:HasTags}<div class="tags">
+            {block:iffiled}<b>filed under</b>: {/block:iffiled}<ul class="tags">{block:Tags}<li><a href="{TagURL}">{Tag}</a></li>{/block:Tags}</ul>
+          </div>{/block:HasTags}{/block:ifTags}
+        </footer>
+      {/block:Posts}</section> <!-- end posts -->
+    </main>
+  </body>
+</html>
