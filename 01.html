@@ -28,10 +28,11 @@
       #sidebar h1 { margin:0; font-size:1.5rem; }
       #sidebar img { margin:1rem 0 0; } 
       #desc { margin:1rem 0 0; }
-      #pagination { display:flex; margin:1rem 0 0; padding:0; font-weight:bold; list-style-type:none; }
+      #pagination { display:flex; gap:10px; margin:1rem 0 0; padding:0; font-weight:bold; list-style-type:none; }
     section#posts { margin:auto; padding-top:50px; width:500px; }
       footer { margin:1rem 0 50px; font-size:0.9rem; }
-        .permalink { font-family:{font:title}; font-family:{text:font override}; font-weight:bold; }
+        .permalink { margin:0 5px 0 0; font-family:{font:title}; font-family:{text:font override}; font-weight:bold; }
+        .reblog { display:inline-block; }
         .tags { margin:0.25rem 0 0; }
         ul.tags { display:inline-block; margin:0; padding:0; list-style-type:none; }
         ul.tags li { display:inline-block; margin:0 10px 0 0; padding:0; }
@@ -167,12 +168,13 @@
             {/block:Reblogs}</div>
           {/block:RebloggedFrom}
         </article>{/block:Audio}
-        <footer>
+        {block:Date}<footer>
           <span class="permalink"><a href="{Permalink}">{TimeAgo}</a></span>
+          <span class="reblog"><a href="{ReblogURL}">(reblog)</a></span>
           {block:ifTags}{block:HasTags}<div class="tags">
             {block:iffiled}<b>filed under</b>: {/block:iffiled}<ul class="tags">{block:Tags}<li><a href="{TagURL}">{Tag}</a></li>{/block:Tags}</ul>
           </div>{/block:HasTags}{/block:ifTags}
-        </footer>
+        </footer>{block:Date}
       {/block:Posts}</section> <!-- end posts -->
     </main>
   </body>
